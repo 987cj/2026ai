@@ -1,6 +1,6 @@
 import sys
 import utils
-from readmap import readmap
+from readmap import read_map
 
 mode = -1
 algorithm = -1
