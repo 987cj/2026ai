@@ -7,7 +7,7 @@ algorithm = -1
 heuristic = -1
 
 # Handle command line arguments
-if (sys.argv.__len__() != 5):
+if not (len(sys.argv) == 4 or len(sys.argv) == 5):
 	utils.exit_program("Not enough arguments: python pathfinder.py [mode] [map] [algorithm] [heuristic]")
 
 match sys.argv[1]:
@@ -27,6 +27,8 @@ match sys.argv[3]:
 	case "ucs":
 		algorithm = 1
 	case "astar":
+		if len(sys.argv) == 4:
+			utils.exit_program("Not enough arguments: python pathfinder.py [mode] [map] [algorithm] [heuristic]")
 		algorithm = 2
 	case _:
 		utils.exit_program("Invalid algorithm: algorithm types are bfs, ucs, astar.")
