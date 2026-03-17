@@ -22,7 +22,7 @@ def process_map_input(file):
 	end_pos = process_line(file.readline(), 2)
 	map_arr = []
 	for i in range(size[0]):
-		new_row = process_line(file.readline(), size[1])
+		new_row = process_map_line(file.readline(), size[1])
 		map_arr.append(new_row)
 	new_map.size = (size[0], size[1])
 	new_map.start = (start_pos[0], start_pos[1])
@@ -34,10 +34,25 @@ def process_map_input(file):
 def process_line(line, num_elements):
 	line_text = line.split()
 	try:
-		if len(line_text) != 2:
+		if len(line_text) != num_elements:
 			raise(utils.MapInputError)
 		for i in range(len(line_text)):
 			line_text[i] = int(line_text[i])
+	except (utils.MapInputError, ValueError):
+		utils.exit_program("Map File is not configured correctly.")
+	except Exception:
+		traceback.print_exc()
+		utils.exit_program("Error Occurred.")
+	return(line_text)
+
+def process_map_line(line, num_elements):
+	line_text = line.split()
+	try:
+		if len(line_text) != num_elements:
+			raise(utils.MapInputError)
+		for i in range(len(line_text)):
+			if line_text[i] != "X":
+				line_text[i] = int(line_text[i])
 	except (utils.MapInputError, ValueError):
 		utils.exit_program("Map File is not configured correctly.")
 	except Exception:

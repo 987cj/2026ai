@@ -33,10 +33,11 @@ match sys.argv[3]:
 	case _:
 		utils.exit_program("Invalid algorithm: algorithm types are bfs, ucs, astar.")
 
-match sys.argv[4]:
-	case "euclidean":
-		heuristic = 0
-	case "manhattan":
-		heuristic = 1
-	case _:
-		utils.exit_program("Invalid heuristic: heuristic types are euclidean, manhattan")
+if sys.argv[3] == "astar":
+	match sys.argv[4]:
+		case "euclidean":
+			heuristic = 0
+		case "manhattan":
+			heuristic = 1
+		case _:
+			utils.exit_program("Invalid heuristic: heuristic types are euclidean, manhattan")
