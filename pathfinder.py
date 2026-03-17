@@ -1,14 +1,14 @@
 import sys
 import utils
 from readmap import read_map
+from bfs import BFS
 
 mode = -1
-algorithm = -1
 heuristic = -1
 
 # Handle command line arguments
 if not (len(sys.argv) == 4 or len(sys.argv) == 5):
-	utils.exit_program("Not enough arguments: python pathfinder.py [mode] [map] [algorithm] [heuristic]")
+	utils.exit_program("Incorrect number of arguments: python pathfinder.py [mode] [map] [algorithm] [heuristic]")
 
 match sys.argv[1]:
 	case "debug":
@@ -18,26 +18,24 @@ match sys.argv[1]:
 	case _:
 		utils.exit_program("Invalid mode: mode types are debug, release")
 
-map = read_map(sys.argv[2])
+path_map = read_map(sys.argv[2])
+print(path_map.map_array)
 
 #algorithm
 match sys.argv[3]:
 	case "bfs":
-		algorithm = 0
+		bfs_search = BFS(path_map)
 	case "ucs":
-		algorithm = 1
+		pass
 	case "astar":
-		if len(sys.argv) == 4:
-			utils.exit_program("Not enough arguments: python pathfinder.py [mode] [map] [algorithm] [heuristic]")
-		algorithm = 2
+		if len(sys.argv) != 5:
+			utils.exit_program("Incorrect number of arguments: python pathfinder.py [mode] [map] [algorithm] [heuristic]")
+		match sys.argv[4]:
+			case "euclidean":
+				heuristic = 0
+			case "manhattan":
+				heuristic = 1
+			case _:
+				utils.exit_program("Invalid heuristic: heuristic types are euclidean, manhattan")
 	case _:
 		utils.exit_program("Invalid algorithm: algorithm types are bfs, ucs, astar.")
-
-if sys.argv[3] == "astar":
-	match sys.argv[4]:
-		case "euclidean":
-			heuristic = 0
-		case "manhattan":
-			heuristic = 1
-		case _:
-			utils.exit_program("Invalid heuristic: heuristic types are euclidean, manhattan")
