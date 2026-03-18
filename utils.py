@@ -1,4 +1,5 @@
 import sys
+import copy
 
 
 class PathMap:
@@ -13,6 +14,7 @@ class Node:
 		self.cost = cost
 		self.children = []
 		self.path = []
+		self.path_set = set()
 
 class MapAlgorithm:
 	def __init__(self, path_map):
@@ -80,6 +82,50 @@ class MapAlgorithm:
 				if (n < self.map_copy.size[1] - 1):
 					row_string += " "
 			print(row_string)
+
+	# makes a deep copy from dictionary - able to modify costs, etc.
+	def get_node(self, position):
+		try:
+			if type(self.map_nodes[position].cost) is not int:
+				return None
+		except KeyError: #not in map
+			return None
+		try:
+			return(copy.deepcopy(self.map_nodes[position]))
+		except Exception:
+			exit_program("Node error occurred - cannot copy node")
+
+	# gets singular child node from a given parent and position
+	def get_child_node(self, node_parent, position):
+		child_node = self.get_node(position)
+
+		if child_node is not None:
+			child_node.path = node_parent.path.copy()
+			child_node.path.append(child_node)
+			child_node.path_set = node_parent.path_set.copy()
+			child_node.path_set.add(position)
+			node_parent.children.append(child_node)
+
+		return (child_node)
+
+	# adds deep copies of node children to node parent's child array
+	def get_node_children(self, node_parent):
+		up_position = (node_parent.position[0] - 1, node_parent.position[1])
+		right_position = (node_parent.position[0], node_parent.position[1] + 1)
+		down_position = (node_parent.position[0] + 1, node_parent.position[1])
+		left_position = (node_parent.position[0], node_parent.position[1] - 1)
+
+		if up_position not in node_parent.path_set:
+			self.get_child_node(node_parent, up_position)
+
+		if right_position not in node_parent.path_set:
+			self.get_child_node(node_parent, right_position)
+
+		if down_position not in node_parent.path_set:
+			self.get_child_node(node_parent, down_position)
+
+		if left_position not in node_parent.path_set:
+			self.get_child_node(node_parent, left_position)
 
 
 class MapInputError(Exception):
