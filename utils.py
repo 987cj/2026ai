@@ -19,8 +19,9 @@ class Node:
 class MapAlgorithm:
 	def __init__(self, path_map):
 		self.map_copy = path_map
-		self.path = path_map.map_array
+		self.path = copy.deepcopy(path_map.map_array)
 		self.visits = self._MapAlgorithm__create_empty_map()
+		self.visits_index = 0
 		self.first_visit = self._MapAlgorithm__create_empty_map()
 		self.last_visit = self._MapAlgorithm__create_empty_map()
 		self.map_nodes = dict()
@@ -46,6 +47,9 @@ class MapAlgorithm:
 				self.map_nodes[(i, j)] = new_node
 
 	def search(self):
+		pass # will be overriden by inherited classes
+
+	def visit(self, node):
 		pass # will be overriden by inherited classes
 
 	def print_debug(self):
