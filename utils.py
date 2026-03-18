@@ -115,21 +115,21 @@ class MapAlgorithm:
 	# adds deep copies of node children to node parent's child array
 	def get_node_children(self, node_parent):
 		up_position = (node_parent.position[0] - 1, node_parent.position[1])
-		right_position = (node_parent.position[0], node_parent.position[1] + 1)
 		down_position = (node_parent.position[0] + 1, node_parent.position[1])
 		left_position = (node_parent.position[0], node_parent.position[1] - 1)
+		right_position = (node_parent.position[0], node_parent.position[1] + 1)
 
 		if up_position not in node_parent.path_set:
 			self.get_child_node(node_parent, up_position)
-
-		if right_position not in node_parent.path_set:
-			self.get_child_node(node_parent, right_position)
 
 		if down_position not in node_parent.path_set:
 			self.get_child_node(node_parent, down_position)
 
 		if left_position not in node_parent.path_set:
 			self.get_child_node(node_parent, left_position)
+
+		if right_position not in node_parent.path_set:
+			self.get_child_node(node_parent, right_position)
 
 
 class MapInputError(Exception):

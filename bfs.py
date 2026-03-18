@@ -24,7 +24,7 @@ class BFS(utils.MapAlgorithm):
 			self.visits[node.position[0]][node.position[1]] = 1
 		else:
 			self.visits[node.position[0]][node.position[1]] += 1
-		if self.first_visit[node.position[0]][node.position[1]] is not int:
+		if self.first_visit[node.position[0]][node.position[1]] == ".":
 			self.first_visit[node.position[0]][node.position[1]] = self.visits_index
 		self.last_visit[node.position[0]][node.position[1]] = self.visits_index
 

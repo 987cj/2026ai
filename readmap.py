@@ -25,8 +25,8 @@ def process_map_input(file):
 		new_row = process_map_line(file.readline(), size[1])
 		map_arr.append(new_row)
 	new_map.size = (size[0], size[1])
-	new_map.start = (start_pos[0], start_pos[1])
-	new_map.end = (end_pos[0], end_pos[1])
+	new_map.start = (start_pos[0] - 1, start_pos[1] - 1)
+	new_map.end = (end_pos[0] - 1, end_pos[1] - 1)
 	new_map.map_array = map_arr
 	return(new_map)
 
