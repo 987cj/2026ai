@@ -2,8 +2,9 @@ import sys
 import utils
 from readmap import read_map
 from bfs import BFS
+from ucs import UCS
+from astar import AStar
 
-heuristic = -1
 search = None
 
 # Handle command line arguments
@@ -20,15 +21,15 @@ match sys.argv[3]:
 	case "bfs":
 		search = BFS(path_map)
 	case "ucs":
-		pass
+		search = UCS(path_map)
 	case "astar":
 		if len(sys.argv) != 5:
 			utils.exit_program("Incorrect number of arguments: python pathfinder.py [mode] [map] [algorithm] [heuristic]")
 		match sys.argv[4]:
 			case "euclidean":
-				heuristic = 0
+				search = AStar(path_map, "euclidean")
 			case "manhattan":
-				heuristic = 1
+				search = AStar(path_map, "manhattan")
 			case _:
 				utils.exit_program("Invalid heuristic: heuristic types are euclidean, manhattan")
 	case _:

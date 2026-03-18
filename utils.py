@@ -9,9 +9,10 @@ class PathMap:
 	map_array =[[]]
 
 class Node:
-	def __init__(self, position, cost):
+	def __init__(self, position, elevation):
 		self.position = position
-		self.cost = cost
+		self.elevation = elevation
+		self.cost = 0
 		self.children = []
 		self.path = []
 		self.path_set = set()
@@ -90,7 +91,7 @@ class MapAlgorithm:
 	# makes a deep copy from dictionary - able to modify costs, etc.
 	def get_node(self, position):
 		try:
-			if type(self.map_nodes[position].cost) is not int:
+			if self.map_nodes[position].elevation == "X" :
 				return None
 		except KeyError: #not in map
 			return None
@@ -131,6 +132,15 @@ class MapAlgorithm:
 		if right_position not in node_parent.path_set:
 			self.get_child_node(node_parent, right_position)
 
+	def parse_path(self, node):
+		for path_node in node.path:
+			self.path[path_node.position[0]][path_node.position[1]] = "*"
+
+	def get_cost(self, node_from, node_to):
+		base_cost = 1
+		if node_to.elevation > node_from.elevation:
+			base_cost += (node_to.elevation - node_from.elevation)
+		return (base_cost)
 
 class MapInputError(Exception):
 	pass

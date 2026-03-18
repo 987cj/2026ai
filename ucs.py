@@ -1,6 +1,6 @@
 import utils
 
-class BFS(utils.MapAlgorithm):
+class UCS(utils.MapAlgorithm): #copied from BFS
 	def search(self):
 		self.visits_index = 1
 
