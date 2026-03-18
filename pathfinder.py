@@ -3,7 +3,6 @@ import utils
 from readmap import read_map
 from bfs import BFS
 
-mode = -1
 heuristic = -1
 search = None
 
