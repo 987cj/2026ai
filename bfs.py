@@ -7,7 +7,6 @@ class BFS(utils.MapAlgorithm):
 		start_node = self.get_node(self.map_copy.start)
 		if start_node == None: # start node is inaccessible
 			return
-		start_node.path.append(start_node)
 		start_node.path_set.add(self.map_copy.start)
 
 		self.visit(start_node)
@@ -19,6 +18,7 @@ class BFS(utils.MapAlgorithm):
 				break
 	
 	def visit(self, node):
+		print("visiting ", node.position)
 		if self.visits[node.position[0]][node.position[1]] == ".":
 			self.visits[node.position[0]][node.position[1]] = 1
 		else:

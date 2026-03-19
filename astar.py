@@ -25,12 +25,12 @@ class AStar(utils.MapAlgorithm):
 			case "euclidean":
 				for i in range(self.map_copy.size[0]):
 					for j in range(self.map_copy.size[1]):
-						euclidean_distance = math.dist((i + 1, j + 1), self.map_copy.end)
+						euclidean_distance = math.dist((i, j), self.map_copy.end)
 						self.map_heuristics[(i, j)] = euclidean_distance
 			case "manhattan":
 				for i in range(self.map_copy.size[0]):
 					for j in range(self.map_copy.size[1]):
-						manhattan_distance = abs((i + 1) - self.map_copy.end[0]) + abs((j + 1) - self.map_copy.end[1])
+						manhattan_distance = abs(i - self.map_copy.end[0]) + abs(j - self.map_copy.end[1])
 						self.map_heuristics[(i, j)] = manhattan_distance
 			case _:
 				utils.exit_program("Heuristic is not valid.")
@@ -42,7 +42,6 @@ class AStar(utils.MapAlgorithm):
 		start_node = self.get_node(self.map_copy.start)
 		if start_node == None: # start node is inaccessible
 			return
-		start_node.path.append(start_node)
 		start_node.path_set.add(self.map_copy.start)
 
 		self.visit(start_node)

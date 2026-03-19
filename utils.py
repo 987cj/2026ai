@@ -17,7 +17,6 @@ class Node:
 		self.elevation = elevation
 		self.cost = 0
 		self.children = []
-		self.path = []
 		self.path_set = set()
 
 
@@ -116,8 +115,6 @@ class MapAlgorithm:
 		child_node = self.get_node(position)
 
 		if child_node is not None:
-			child_node.path = node_parent.path.copy()
-			child_node.path.append(child_node)
 			child_node.path_set = node_parent.path_set.copy()
 			child_node.path_set.add(position)
 			node_parent.children.append(child_node)
@@ -144,8 +141,8 @@ class MapAlgorithm:
 			self.get_child_node(node_parent, right_position)
 
 	def parse_path(self, node):
-		for path_node in node.path:
-			self.path[path_node.position[0]][path_node.position[1]] = "*"
+		for path_node in node.path_set:
+			self.path[path_node[0]][path_node[1]] = "*"
 
 	def get_cost(self, node_from, node_to):
 		base_cost = 1
