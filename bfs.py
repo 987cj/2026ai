@@ -18,7 +18,6 @@ class BFS(utils.MapAlgorithm):
 				break
 	
 	def visit(self, node):
-		print("visiting ", node.position)
 		if self.visits[node.position[0]][node.position[1]] == ".":
 			self.visits[node.position[0]][node.position[1]] = 1
 		else:
