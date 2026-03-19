@@ -32,7 +32,7 @@ class MapAlgorithm:
 		self.map_nodes = dict()
 		self.search_array = PriorityQueue()
 		self.search_index = count(0) #keeps add order preserved in priorityqueue
-		self.__create_nodes()
+		self.create_nodes()
 	
 	def __create_empty_map(self):
 		new_map = []
@@ -46,7 +46,7 @@ class MapAlgorithm:
 			new_map.append(new_row)
 		return(new_map)
 
-	def __create_nodes(self):
+	def create_nodes(self):
 		for i in range(self.map_copy.size[0]):
 			for j in range(self.map_copy.size[1]):
 				new_node = Node((i, j), self.map_copy.map_array[i][j])

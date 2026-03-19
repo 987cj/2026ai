@@ -1,4 +1,8 @@
 import utils
+import copy
+import math
+from queue import PriorityQueue
+from itertools import count
 
 class AStar(utils.MapAlgorithm):
 	def __init__(self, path_map, heuristic):
@@ -10,4 +14,58 @@ class AStar(utils.MapAlgorithm):
 		self.first_visit = self._MapAlgorithm__create_empty_map()
 		self.last_visit = self._MapAlgorithm__create_empty_map()
 		self.map_nodes = dict()
-		self.__create_nodes()
+		self.map_heuristics = dict()
+		self.search_array = PriorityQueue()
+		self.search_index = count(0) #keeps add order preserved in priorityqueue
+		self.create_nodes()
+		self.__create_heuristics()
+
+	def __create_heuristics(self):
+		match self.heuristic:
+			case "euclidean":
+				for i in range(self.map_copy.size[0]):
+					for j in range(self.map_copy.size[1]):
+						euclidean_distance = math.dist((i + 1, j + 1), self.map_copy.end)
+						self.map_heuristics[(i, j)] = euclidean_distance
+			case "manhattan":
+				pass
+			case _:
+				utils.exit_program("Heuristic is not valid.")
+
+
+	def search(self):
+		self.visits_index = 1
+
+		start_node = self.get_node(self.map_copy.start)
+		if start_node == None: # start node is inaccessible
+			return
+		start_node.path.append(start_node)
+		start_node.path_set.add(self.map_copy.start)
+
+		self.visit(start_node)
+
+		while not self.search_array.empty():
+			current_node = self.search_array.get()[2]
+			if self.visit(current_node) == True:
+				self.parse_path(current_node)
+				break
+	
+	def visit(self, node):
+		if self.visits[node.position[0]][node.position[1]] == ".":
+			self.visits[node.position[0]][node.position[1]] = 1
+		else:
+			self.visits[node.position[0]][node.position[1]] += 1
+		if self.first_visit[node.position[0]][node.position[1]] == ".":
+			self.first_visit[node.position[0]][node.position[1]] = self.visits_index
+		self.last_visit[node.position[0]][node.position[1]] = self.visits_index
+
+		self.visits_index += 1
+
+		if node.position == self.map_copy.end:
+			return(True)
+		self.get_node_children(node)
+		for child in node.children:
+			child.cost = node.cost + self.get_cost(node, child) + self.map_heuristics[child.position]
+			self.search_array.put((child.cost, next(self.search_index), child))
+
+		return(False)
