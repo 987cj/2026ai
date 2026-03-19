@@ -59,8 +59,11 @@ class MapAlgorithm:
 		pass # will be overriden by inherited classes
 
 	def print_debug(self):
-		print("path:")
-		self.print_map(self.path)
+		if self.path == self.map_copy.map_array:
+			print("null")
+		else:
+			print("path:")
+			self.print_map(self.path)
 		print("#visits:")
 		self.print_map(self.visits)
 		print("first visit:")
@@ -69,7 +72,10 @@ class MapAlgorithm:
 		self.print_map(self.last_visit)
 
 	def print_release(self):
-		self.print_map(self.path)
+		if self.path == self.map_copy.map_array:
+			print("null")
+		else:
+			self.print_map(self.path)
 
 	def print_map(self, map_arr):
 		max_digits = 0
