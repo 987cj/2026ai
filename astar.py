@@ -1,6 +1,6 @@
 import utils
 import math
-from queue import PriorityQueue
+import heapq
 from itertools import count
 
 class AStar(utils.MapAlgorithm):
@@ -15,7 +15,7 @@ class AStar(utils.MapAlgorithm):
 		self.last_visit = self._MapAlgorithm__create_empty_map()
 		self.map_nodes = dict()
 		self.map_heuristics = dict()
-		self.search_array = PriorityQueue()
+		self.search_array = []
 		self.search_index = count(0) #keeps add order preserved in priorityqueue
 		self.create_nodes()
 		self.__create_heuristics()
@@ -38,6 +38,7 @@ class AStar(utils.MapAlgorithm):
 
 	def search(self):
 		self.visits_index = 1
+		heapq.heapify(self.search_array)
 
 		start_node = self.get_node(self.map_copy.start)
 		if start_node == None: # start node is inaccessible
@@ -45,8 +46,8 @@ class AStar(utils.MapAlgorithm):
 
 		self.visit(start_node)
 
-		while not self.search_array.empty():
-			current_node = self.search_array.get()[2]
+		while self.search_array:
+			current_node = heapq.heappop(self.search_array)[2]
 			if self.visit(current_node) == True:
 				self.parse_path(current_node)
 				break
@@ -67,6 +68,6 @@ class AStar(utils.MapAlgorithm):
 		
 		for child in self.get_node_children(node):
 			child.path_cost = node.path_cost + self.get_cost(node, child) + self.map_heuristics[child.node.position]
-			self.search_array.put((child.path_cost, next(self.search_index), child))
+			heapq.heappush(self.search_array, (child.path_cost, next(self.search_index), child))
 
 		return(False)

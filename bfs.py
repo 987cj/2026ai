@@ -1,8 +1,10 @@
 import utils
+from collections import deque
 
 class BFS(utils.MapAlgorithm):
 	def search(self):
 		self.visits_index = 1
+		self.search_array = deque()
 
 		start_node = self.get_node(self.map_copy.start)
 		if start_node == None: # start node is inaccessible
@@ -10,12 +12,12 @@ class BFS(utils.MapAlgorithm):
 
 		self.visit(start_node)
 
-		while not self.search_array.empty():
-			current_node = self.search_array.get()[2]
+		while self.search_array:
+			current_node = self.search_array.popleft()
 			if self.visit(current_node) == True:
 				self.parse_path(current_node)
 				break
-	
+
 	def visit(self, node):
 		if self.visits[node.node.position[0]][node.node.position[1]] == ".":
 			self.visits[node.node.position[0]][node.node.position[1]] = 1
@@ -30,7 +32,6 @@ class BFS(utils.MapAlgorithm):
 		if node.node.position == self.map_copy.end:
 			return(True)
 		
-		for child in self.get_node_children(node):
-			self.search_array.put((1, next(self.search_index), child))
+		self.search_array.extend(self.get_node_children(node))
 
 		return(False)

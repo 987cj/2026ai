@@ -1,17 +1,19 @@
 import utils
+import heapq
 
 class UCS(utils.MapAlgorithm):
 	def search(self):
 		self.visits_index = 1
-
+		heapq.heapify(self.search_array)
+	
 		start_node = self.get_node(self.map_copy.start)
 		if start_node == None: # start node is inaccessible
 			return
 
 		self.visit(start_node)
 
-		while not self.search_array.empty():
-			current_node = self.search_array.get()[2]
+		while self.search_array:
+			current_node = heapq.heappop(self.search_array)[2]
 			if self.visit(current_node) == True:
 				self.parse_path(current_node)
 				break
@@ -32,6 +34,6 @@ class UCS(utils.MapAlgorithm):
 		
 		for child in self.get_node_children(node):
 			child.path_cost = node.path_cost + self.get_cost(node, child)
-			self.search_array.put((child.path_cost, next(self.search_index), child))
+			heapq.heappush(self.search_array, (child.path_cost, next(self.search_index), child))
 
 		return(False)

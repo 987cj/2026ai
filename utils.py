@@ -1,5 +1,4 @@
 import sys
-from queue import PriorityQueue
 from itertools import count
 
 
@@ -33,7 +32,7 @@ class MapAlgorithm:
 		self.first_visit = self._MapAlgorithm__create_empty_map()
 		self.last_visit = self._MapAlgorithm__create_empty_map()
 		self.map_nodes = dict()
-		self.search_array = PriorityQueue()
+		self.search_array = []
 		self.search_index = count(0) #keeps add order preserved in priorityqueue
 		self.create_nodes()
 	
@@ -130,9 +129,10 @@ class MapAlgorithm:
 		directions = [up_position, down_position, left_position, right_position]
 
 		for direction in directions:
-			child_node = self.get_child_node(node_parent, direction)
-			if child_node is not None and self.in_parent_path(node_parent, direction) == False:
-				child_arr.append(child_node)
+			if self.in_parent_path(node_parent, direction) == False:
+				child_node = self.get_child_node(node_parent, direction)
+				if child_node is not None:
+					child_arr.append(child_node)
 		return(child_arr)
 
 	def parse_path(self, node):
