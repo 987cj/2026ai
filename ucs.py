@@ -34,6 +34,6 @@ class UCS(utils.MapAlgorithm):
 		self.get_node_children(node)
 		for child in node.children:
 			child.cost = node.cost + self.get_cost(node, child)
-			self.search_array.put((1, next(self.search_index), child))
+			self.search_array.put((child.cost, next(self.search_index), child))
 
 		return(False)
