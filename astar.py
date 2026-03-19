@@ -53,21 +53,21 @@ class AStar(utils.MapAlgorithm):
 				break
 	
 	def visit(self, node):
-		if self.visits[node.position[0]][node.position[1]] == ".":
-			self.visits[node.position[0]][node.position[1]] = 1
+		if self.visits[node.node.position[0]][node.node.position[1]] == ".":
+			self.visits[node.node.position[0]][node.node.position[1]] = 1
 		else:
-			self.visits[node.position[0]][node.position[1]] += 1
-		if self.first_visit[node.position[0]][node.position[1]] == ".":
-			self.first_visit[node.position[0]][node.position[1]] = self.visits_index
-		self.last_visit[node.position[0]][node.position[1]] = self.visits_index
+			self.visits[node.node.position[0]][node.node.position[1]] += 1
+		if self.first_visit[node.node.position[0]][node.node.position[1]] == ".":
+			self.first_visit[node.node.position[0]][node.node.position[1]] = self.visits_index
+		self.last_visit[node.node.position[0]][node.node.position[1]] = self.visits_index
 
 		self.visits_index += 1
 
-		if node.position == self.map_copy.end:
+		if node.node.position == self.map_copy.end:
 			return(True)
 		
 		for child in self.get_node_children(node):
-			child.cost = node.cost + self.get_cost(node, child) + self.map_heuristics[child.position]
-			self.search_array.put((child.cost, next(self.search_index), child))
+			child.path_cost = node.path_cost + self.get_cost(node, child) + self.map_heuristics[child.node.position]
+			self.search_array.put((child.path_cost, next(self.search_index), child))
 
 		return(False)

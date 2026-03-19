@@ -16,6 +16,11 @@ class Node:
 		self.position = position
 		self.elevation = elevation
 		self.cost = 0
+
+class PathNode:
+	def __init__(self, node):
+		self.node = node
+		self.path_cost = 0
 		self.path_set = set()
 
 
@@ -97,17 +102,14 @@ class MapAlgorithm:
 					row_string += " "
 			print(row_string)
 
-	# makes a deep copy from dictionary - able to modify costs, etc.
+	# makes a copy from dictionary - able to modify costs, etc.
 	def get_node(self, position):
 		try:
 			if self.map_nodes[position].elevation == "X" :
 				return None
 		except KeyError: #not in map
 			return None
-		try:
-			return(copy.copy(self.map_nodes[position]))
-		except Exception:
-			exit_program("Node error occurred - cannot copy node")
+		return(PathNode(self.map_nodes[position]))
 
 	# gets singular child node from a given parent and position
 	def get_child_node(self, node_parent, position):
@@ -122,10 +124,10 @@ class MapAlgorithm:
 	# adds deep copies of node children to node parent's child array
 	def get_node_children(self, node_parent):
 		child_arr = []
-		up_position = (node_parent.position[0] - 1, node_parent.position[1])
-		down_position = (node_parent.position[0] + 1, node_parent.position[1])
-		left_position = (node_parent.position[0], node_parent.position[1] - 1)
-		right_position = (node_parent.position[0], node_parent.position[1] + 1)
+		up_position = (node_parent.node.position[0] - 1, node_parent.node.position[1])
+		down_position = (node_parent.node.position[0] + 1, node_parent.node.position[1])
+		left_position = (node_parent.node.position[0], node_parent.node.position[1] - 1)
+		right_position = (node_parent.node.position[0], node_parent.node.position[1] + 1)
 		directions = [up_position, down_position, left_position, right_position]
 
 		for direction in directions:
@@ -142,8 +144,8 @@ class MapAlgorithm:
 
 	def get_cost(self, node_from, node_to):
 		base_cost = 1
-		if node_to.elevation > node_from.elevation:
-			base_cost += (node_to.elevation - node_from.elevation)
+		if node_to.node.elevation > node_from.node.elevation:
+			base_cost += (node_to.node.elevation - node_from.node.elevation)
 		return (base_cost)
 
 
