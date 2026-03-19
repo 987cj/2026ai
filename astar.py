@@ -1,5 +1,4 @@
 import utils
-import copy
 import math
 from queue import PriorityQueue
 from itertools import count
@@ -8,7 +7,8 @@ class AStar(utils.MapAlgorithm):
 	def __init__(self, path_map, heuristic):
 		self.map_copy = path_map
 		self.heuristic = heuristic
-		self.path = copy.deepcopy(path_map.map_array)
+		self.path = path_map.map_array
+		self.path_modified = False
 		self.visits = self._MapAlgorithm__create_empty_map()
 		self.visits_index = 0
 		self.first_visit = self._MapAlgorithm__create_empty_map()
@@ -42,7 +42,6 @@ class AStar(utils.MapAlgorithm):
 		start_node = self.get_node(self.map_copy.start)
 		if start_node == None: # start node is inaccessible
 			return
-		start_node.path_set.add(self.map_copy.start)
 
 		self.visit(start_node)
 

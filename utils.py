@@ -1,5 +1,4 @@
 import sys
-import copy
 from queue import PriorityQueue
 from itertools import count
 
@@ -21,13 +20,14 @@ class PathNode:
 	def __init__(self, node):
 		self.node = node
 		self.path_cost = 0
-		self.path_set = set()
+		self.parent = None
 
 
 class MapAlgorithm:
 	def __init__(self, path_map):
 		self.map_copy = path_map
-		self.path = copy.deepcopy(path_map.map_array)
+		self.path = path_map.map_array
+		self.path_modified = False
 		self.visits = self._MapAlgorithm__create_empty_map()
 		self.visits_index = 0
 		self.first_visit = self._MapAlgorithm__create_empty_map()
@@ -62,7 +62,7 @@ class MapAlgorithm:
 		pass # will be overriden by inherited classes
 
 	def print_debug(self):
-		if self.path == self.map_copy.map_array:
+		if self.path_modified == False:
 			print("null")
 		else:
 			print("path:")
@@ -75,7 +75,7 @@ class MapAlgorithm:
 		self.print_map(self.last_visit)
 
 	def print_release(self):
-		if self.path == self.map_copy.map_array:
+		if self.path_modified == False:
 			print("null")
 		else:
 			self.print_map(self.path)
@@ -115,9 +115,8 @@ class MapAlgorithm:
 	def get_child_node(self, node_parent, position):
 		child_node = self.get_node(position)
 
-		if child_node is not None:
-			child_node.path_set = node_parent.path_set.copy()
-			child_node.path_set.add(position)
+		if child_node != None:
+			child_node.parent = node_parent
 
 		return (child_node)
 
@@ -131,22 +130,31 @@ class MapAlgorithm:
 		directions = [up_position, down_position, left_position, right_position]
 
 		for direction in directions:
-			if direction not in node_parent.path_set:
-				child_node = self.get_child_node(node_parent, direction)
-				if (child_node is not None):
-					child_arr.append(child_node)
-		
+			child_node = self.get_child_node(node_parent, direction)
+			if child_node is not None and self.in_parent_path(node_parent, direction) == False:
+				child_arr.append(child_node)
 		return(child_arr)
 
 	def parse_path(self, node):
-		for path_node in node.path_set:
-			self.path[path_node[0]][path_node[1]] = "*"
+		current_node = node
+		while current_node is not None:
+			self.path_modified = True
+			self.path[current_node.node.position[0]][current_node.node.position[1]] = "*"
+			current_node = current_node.parent
 
 	def get_cost(self, node_from, node_to):
 		base_cost = 1
 		if node_to.node.elevation > node_from.node.elevation:
 			base_cost += (node_to.node.elevation - node_from.node.elevation)
 		return (base_cost)
+	
+	def in_parent_path(self, parent_node, position):
+		current_node = parent_node
+		while current_node is not None:
+			if position == current_node.node.position:
+				return (True)
+			current_node = current_node.parent
+		return (False)
 
 
 class MapInputError(Exception):

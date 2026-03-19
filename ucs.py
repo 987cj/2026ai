@@ -7,7 +7,6 @@ class UCS(utils.MapAlgorithm):
 		start_node = self.get_node(self.map_copy.start)
 		if start_node == None: # start node is inaccessible
 			return
-		start_node.path_set.add(self.map_copy.start)
 
 		self.visit(start_node)
 
