@@ -16,7 +16,6 @@ class Node:
 		self.position = position
 		self.elevation = elevation
 		self.cost = 0
-		self.children = []
 		self.path_set = set()
 
 
@@ -106,7 +105,7 @@ class MapAlgorithm:
 		except KeyError: #not in map
 			return None
 		try:
-			return(copy.deepcopy(self.map_nodes[position]))
+			return(copy.copy(self.map_nodes[position]))
 		except Exception:
 			exit_program("Node error occurred - cannot copy node")
 
@@ -117,28 +116,25 @@ class MapAlgorithm:
 		if child_node is not None:
 			child_node.path_set = node_parent.path_set.copy()
 			child_node.path_set.add(position)
-			node_parent.children.append(child_node)
 
 		return (child_node)
 
 	# adds deep copies of node children to node parent's child array
 	def get_node_children(self, node_parent):
+		child_arr = []
 		up_position = (node_parent.position[0] - 1, node_parent.position[1])
 		down_position = (node_parent.position[0] + 1, node_parent.position[1])
 		left_position = (node_parent.position[0], node_parent.position[1] - 1)
 		right_position = (node_parent.position[0], node_parent.position[1] + 1)
+		directions = [up_position, down_position, left_position, right_position]
 
-		if up_position not in node_parent.path_set:
-			self.get_child_node(node_parent, up_position)
-
-		if down_position not in node_parent.path_set:
-			self.get_child_node(node_parent, down_position)
-
-		if left_position not in node_parent.path_set:
-			self.get_child_node(node_parent, left_position)
-
-		if right_position not in node_parent.path_set:
-			self.get_child_node(node_parent, right_position)
+		for direction in directions:
+			if direction not in node_parent.path_set:
+				child_node = self.get_child_node(node_parent, direction)
+				if (child_node is not None):
+					child_arr.append(child_node)
+		
+		return(child_arr)
 
 	def parse_path(self, node):
 		for path_node in node.path_set:

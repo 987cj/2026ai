@@ -30,8 +30,8 @@ class BFS(utils.MapAlgorithm):
 
 		if node.position == self.map_copy.end:
 			return(True)
-		self.get_node_children(node)
-		for child in node.children:
+		
+		for child in self.get_node_children(node):
 			child.cost = node.cost + self.get_cost(node, child)
 			self.search_array.put((1, next(self.search_index), child))
 

@@ -30,8 +30,8 @@ class UCS(utils.MapAlgorithm):
 
 		if node.position == self.map_copy.end:
 			return(True)
-		self.get_node_children(node)
-		for child in node.children:
+		
+		for child in self.get_node_children(node):
 			child.cost = node.cost + self.get_cost(node, child)
 			self.search_array.put((child.cost, next(self.search_index), child))
 
