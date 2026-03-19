@@ -12,11 +12,11 @@ class BFS(utils.MapAlgorithm):
 
 		self.visit(start_node)
 
-		while len(self.search_array) > 0:
-			if self.visit(self.search_array[0]) == True:
-				self.parse_path(self.search_array[0])
+		while not self.search_array.empty():
+			current_node = self.search_array.get()[2]
+			if self.visit(current_node) == True:
+				self.parse_path(current_node)
 				break
-			self.search_array.pop(0)
 	
 	def visit(self, node):
 		if self.visits[node.position[0]][node.position[1]] == ".":
@@ -34,6 +34,6 @@ class BFS(utils.MapAlgorithm):
 		self.get_node_children(node)
 		for child in node.children:
 			child.cost = node.cost + self.get_cost(node, child)
-		self.search_array.extend(node.children)
+			self.search_array.put((1, next(self.search_index), child))
 
 		return(False)

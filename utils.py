@@ -1,5 +1,7 @@
 import sys
 import copy
+from queue import PriorityQueue
+from itertools import count
 
 
 class PathMap:
@@ -7,6 +9,7 @@ class PathMap:
 	start = (0, 0)
 	end = (0, 0)
 	map_array =[[]]
+
 
 class Node:
 	def __init__(self, position, elevation):
@@ -17,6 +20,7 @@ class Node:
 		self.path = []
 		self.path_set = set()
 
+
 class MapAlgorithm:
 	def __init__(self, path_map):
 		self.map_copy = path_map
@@ -26,7 +30,8 @@ class MapAlgorithm:
 		self.first_visit = self._MapAlgorithm__create_empty_map()
 		self.last_visit = self._MapAlgorithm__create_empty_map()
 		self.map_nodes = dict()
-		self.search_array = []
+		self.search_array = PriorityQueue()
+		self.search_index = count(0) #keeps add order preserved in priorityqueue
 		self.__create_nodes()
 	
 	def __create_empty_map(self):
@@ -141,6 +146,7 @@ class MapAlgorithm:
 		if node_to.elevation > node_from.elevation:
 			base_cost += (node_to.elevation - node_from.elevation)
 		return (base_cost)
+
 
 class MapInputError(Exception):
 	pass
