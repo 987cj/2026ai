@@ -28,7 +28,10 @@ class AStar(utils.MapAlgorithm):
 						euclidean_distance = math.dist((i + 1, j + 1), self.map_copy.end)
 						self.map_heuristics[(i, j)] = euclidean_distance
 			case "manhattan":
-				pass
+				for i in range(self.map_copy.size[0]):
+					for j in range(self.map_copy.size[1]):
+						manhattan_distance = abs((i + 1) - self.map_copy.end[0]) + abs((j + 1) - self.map_copy.end[1])
+						self.map_heuristics[(i, j)] = manhattan_distance
 			case _:
 				utils.exit_program("Heuristic is not valid.")
 
