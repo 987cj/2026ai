@@ -54,6 +54,15 @@ class AStar(MapAlgorithm):
 				break
 	
 	def visit(self, node):
+		#self.print_debug()
+		#try:
+		#	print("From: ", node.parent.node.position)
+		#	print("Current: ", node.node.position)
+		#	print(self.map_heuristics[node.node.position])
+		#	print("Cost: ", node.path_cost)
+		#except:
+		#	pass
+		#input()
 		if self.visits[node.node.position[0]][node.node.position[1]] == ".":
 			self.visits[node.node.position[0]][node.node.position[1]] = 1
 		else:
@@ -68,7 +77,7 @@ class AStar(MapAlgorithm):
 			return(True)
 		
 		for child in self.get_node_children(node):
-			child.path_cost = node.path_cost + self.get_cost(node, child) + self.map_heuristics[child.node.position]
-			heapq.heappush(self.search_array, (child.path_cost, next(self.search_index), child))
+			child.path_cost = node.path_cost + self.get_cost(node, child)
+			heapq.heappush(self.search_array, (child.path_cost + self.map_heuristics[child.node.position], next(self.search_index), child))
 
 		return(False)
