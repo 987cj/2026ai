@@ -2,8 +2,9 @@ import utils
 import math
 import heapq
 from itertools import count
+from map_algorithm import MapAlgorithm
 
-class AStar(utils.MapAlgorithm):
+class AStar(MapAlgorithm):
 	def __init__(self, path_map, heuristic):
 		self.map_copy = path_map
 		self.heuristic = heuristic

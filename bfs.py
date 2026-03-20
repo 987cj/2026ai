@@ -1,8 +1,8 @@
-import utils
 from collections import deque
 from itertools import count
+from map_algorithm import MapAlgorithm
 
-class BFS(utils.MapAlgorithm):
+class BFS(MapAlgorithm):
 	def __init__(self, path_map):
 		self.map_copy = path_map
 		self.path = path_map.map_array

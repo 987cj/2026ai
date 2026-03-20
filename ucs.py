@@ -1,7 +1,7 @@
-import utils
 import heapq
+from map_algorithm import MapAlgorithm
 
-class UCS(utils.MapAlgorithm):
+class UCS(MapAlgorithm):
 	def search(self):
 		self.visits_index = 1
 		heapq.heapify(self.search_array)
